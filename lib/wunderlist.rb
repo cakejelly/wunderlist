@@ -1,5 +1,4 @@
-require "wunderlist/version"
+require "rest-client"
 
-module Wunderlist
-  # Your code goes here...
-end
+require "wunderlist/version"
+require "wunderlist/client"
