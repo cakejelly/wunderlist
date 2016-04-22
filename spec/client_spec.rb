@@ -75,4 +75,15 @@ describe Wunderlist::Client do
       end
     end
   end
+
+  describe "#lists" do
+    it "should return instance of ResourceProxy" do
+      expect(subject.lists).to be_instance_of(Wunderlist::ResourceProxy)
+    end
+
+    it "should proxy methods to List" do
+      proxy = subject.lists
+      expect(proxy.resource).to eq(Wunderlist::List)
+    end
+  end
 end

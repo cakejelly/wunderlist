@@ -48,5 +48,9 @@ module Wunderlist
         "Content-Type" => "application/json"
       }
     end
+
+    def lists
+      ResourceProxy.new(self, false, List)
+    end
   end
 end
