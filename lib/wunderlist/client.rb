@@ -1,5 +1,7 @@
 module Wunderlist
   class Client
+    BASE_URL = "https://a.wunderlist.com/api/v1"
+
     attr_reader :client_id, :access_token
 
     def initialize(client_id, access_token)
@@ -7,7 +9,27 @@ module Wunderlist
       @access_token = access_token
     end
 
+    def get(url, params = {})
+      make_request(:get, url, params)
+    end
+
+    def post(url, payload = {})
+      make_request(:post, url, payload)
+    end
+
+    def patch(url, payload = {})
+      make_request(:patch, url, payload)
+    end
+
+    def delete(url, payload = {})
+      make_request(:delete, url, payload)
+    end
+
     def make_request(method, url, payload = {}, headers = {})
+      url = "#{BASE_URL}/#{url}"
+
+      headers = default_headers.merge(headers)
+
       response = RestClient::Request.execute(
         method: method,
         url: url,
@@ -17,6 +39,14 @@ module Wunderlist
       response.empty? ? true : JSON.parse(response)
     rescue RestClient::Exception => e
       puts e
+    end
+
+    def default_headers
+      {
+        "X-Access-Token" => access_token,
+        "X-Client-ID" => client_id,
+        "Content-Type" => "application/json"
+      }
     end
   end
 end

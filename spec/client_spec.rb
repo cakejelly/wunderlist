@@ -28,15 +28,17 @@ describe Wunderlist::Client do
         end
 
         it "should send correct URL" do
+          url = "#{described_class::BASE_URL}/url"
           expect(RestClient::Request).to receive(:execute).
-                                          with(hash_including({url: "/"}))
-          subject.make_request(method, "/")
+                                          with(hash_including({url: url}))
+          subject.make_request(method, "url")
         end
 
         it "should send correct headers" do
           header = { "Some-Header" =>  "value" }
+          headers = subject.default_headers.merge(header)
           expect(RestClient::Request).to receive(:execute).
-                                          with(hash_including({headers: header}))
+                                          with(hash_including({headers: headers}))
           subject.make_request(method, "/", {}, header)
         end
 
@@ -50,6 +52,25 @@ describe Wunderlist::Client do
         it "should parse JSON response" do
           response = subject.make_request(method, "/")
           expect(response).to eq(some_response)
+        end
+      end
+    end
+
+    %w{get post patch delete}.each do |method|
+      describe "##{method}" do
+        before do
+          allow(subject).to receive(:make_request).and_return({body: "some body"})
+        end
+
+        it "should send #{method} to #make_request" do
+          expect(subject).to receive(:make_request).with(method.to_sym, {}, {})
+          subject.send(method, {})
+        end
+
+        it "should send correct payload" do
+          params = {one: "two"}
+          expect(subject).to receive(:make_request).with(method.to_sym, params, {})
+          subject.send(method, params)
         end
       end
     end
