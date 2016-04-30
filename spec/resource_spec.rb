@@ -1,6 +1,8 @@
 require "spec_helper"
 
 describe Wunderlist::Resource do
+  let(:client) { instance_double("Wunderlist::Client") }
+
   describe ".class_name" do
     it "should return the class name as a String" do
       expect(described_class.class_name).to eq("Resource")
@@ -14,8 +16,6 @@ describe Wunderlist::Resource do
   end
 
   describe "API operations" do
-    let(:client) { instance_double("Wunderlist::Client") }
-
     describe ".all" do
       let(:response) { [{ attribute: "value" }, { attribute: "value" }] }
 
@@ -129,6 +129,19 @@ describe Wunderlist::Resource do
       client = instance_double("Layer::Client")
       resource = described_class.new(nil, client)
       expect(resource.client).to eq(client)
+    end
+  end
+
+  describe "#method_missing" do
+    it "should return attribute if it exists in attributes hash" do
+      key, value = ["key", "value"]
+      resource = described_class.new({key => value}, client)
+      expect(resource.key).to eq(value)
+    end
+
+    it "should raise NoMethodError if attribute doesn't exist in attributes" do
+      resource = described_class.new({}, client)
+      expect{ resource.derp }.to raise_error(NoMethodError)
     end
   end
 end

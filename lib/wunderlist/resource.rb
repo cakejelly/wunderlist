@@ -42,5 +42,15 @@ module Wunderlist
       @attributes = attributes
       @client = client
     end
+
+    def method_missing(method, *args, &block)
+      method_key = method.to_s
+      attributes.has_key?(method_key) ? attributes[method_key] : super
+    end
+
+    def respond_to_missing?(method, include_private = false)
+      method_key = method.to_s
+      attributes.has_key?(method_key) ? true : false
+    end
   end
 end
