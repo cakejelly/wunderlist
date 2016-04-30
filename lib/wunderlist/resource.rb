@@ -23,6 +23,11 @@ module Wunderlist
         response = client.post(url, payload)
         new(response, client)
       end
+
+      def update(client, id, payload = {})
+        response = client.patch("#{url}/#{id}", payload)
+        new(response, client)
+      end
     end
 
     attr_reader :attributes, :client

@@ -38,7 +38,7 @@ module Wunderlist
       )
       response.empty? ? true : JSON.parse(response)
     rescue RestClient::Exception => e
-      puts e
+      raise Wunderlist::Exception.from_response(e.http_code, e.http_body)
     end
 
     def default_headers

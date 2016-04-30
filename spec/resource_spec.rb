@@ -73,6 +73,26 @@ describe Wunderlist::Resource do
         expect(resource).to be_instance_of(described_class)
       end
     end
+
+    describe ".update" do
+      let(:response) { { attribute: "value" } }
+      let(:params) { { name: "Homer Simpson" } }
+      let(:id) { "3" }
+
+      before do
+        allow(client).to receive(:patch).and_return(response)
+      end
+
+      it "should make a PATCH request to update the resource" do
+        described_class.update(client, id, params)
+        expect(client).to have_received(:patch).with("resources/#{id}", params)
+      end
+
+      it "should return a new instance of Resource" do
+        resource = described_class.update(client, id, params)
+        expect(resource).to be_instance_of(described_class)
+      end
+    end
   end
 
   describe "#new" do
