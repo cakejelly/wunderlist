@@ -93,6 +93,29 @@ describe Wunderlist::Resource do
         expect(resource).to be_instance_of(described_class)
       end
     end
+
+    describe ".destroy" do
+      let(:id) { "3" }
+
+      before do
+        allow(client).to receive(:delete).and_return(true)
+      end
+
+      it "should make a DELETE request to delete the resource" do
+        described_class.destroy(client, id)
+        expect(client).to have_received(:delete).with("resources/#{id}?")
+      end
+
+      it "should send payload as query params" do
+        payload = { revision: "1" }
+        described_class.destroy(client, id, payload)
+        expect(client).to have_received(:delete).with("resources/#{id}?revision=1")
+      end
+
+      it "should return true if successful" do
+        expect(described_class.destroy(client, id)).to be true
+      end
+    end
   end
 
   describe "#new" do

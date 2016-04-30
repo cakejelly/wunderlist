@@ -28,6 +28,12 @@ module Wunderlist
         response = client.patch("#{url}/#{id}", payload)
         new(response, client)
       end
+
+      def destroy(client, id, payload = {})
+        query_params = payload.map{|key, val| "#{key}=#{val}"}.join("&")
+        delete_url = "#{url}/#{id}?#{query_params}"
+        client.delete(delete_url)
+      end
     end
 
     attr_reader :attributes, :client
