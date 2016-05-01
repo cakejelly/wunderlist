@@ -43,6 +43,20 @@ module Wunderlist
       @client = client
     end
 
+    def url
+      "#{self.class.url}/#{id}"
+    end
+
+    def update(payload = {})
+      payload.merge!(revision: revision)
+      @attributes = client.patch(url, payload)
+      true
+    end
+
+    def destroy
+      client.delete("#{url}?revision=#{revision}")
+    end
+
     def method_missing(method, *args, &block)
       method_key = method.to_s
       attributes.has_key?(method_key) ? attributes[method_key] : super

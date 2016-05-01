@@ -2,6 +2,14 @@ require "spec_helper"
 
 describe Wunderlist::Resource do
   let(:client) { instance_double("Wunderlist::Client") }
+  let(:attributes) do
+    {
+      "id" => "1234",
+      "title" => "Title",
+      "revision" => 1
+    }
+  end
+  let(:resource) { described_class.new(attributes, client) }
 
   describe ".class_name" do
     it "should return the class name as a String" do
@@ -129,6 +137,50 @@ describe Wunderlist::Resource do
       client = instance_double("Layer::Client")
       resource = described_class.new(nil, client)
       expect(resource.client).to eq(client)
+    end
+  end
+
+  describe "#url" do
+    it "should return the api url for that resource" do
+      attributes = { "id" => "1234" }
+      resource = described_class.new(attributes, client)
+      expect(resource.url).to eq("resources/1234")
+    end
+  end
+
+  describe "#update" do
+    let(:params) { { "title" => @title } }
+
+    before do
+      allow(client).to receive(:patch).and_return(params)
+    end
+
+    it "should make a PATCH request to update the resource" do
+      id = resource.id
+      resource.update(params)
+      expect(client).to have_received(:patch).with("resources/#{id}", params)
+    end
+
+    it "should update the instance attributes" do
+      expect {
+        resource.update(params)
+      }.to change { resource.attributes }
+    end
+
+    it "should return true if successful" do
+      expect(resource.update(params)).to eq(true)
+    end
+  end
+
+  describe "#destroy" do
+    before do
+      allow(client).to receive(:delete).and_return(true)
+    end
+
+    it "should destroy the resource" do
+      resource.destroy
+      delete_url = "#{resource.url}?revision=#{resource.revision}"
+      expect(client).to have_received(:delete).with(delete_url)
     end
   end
 
