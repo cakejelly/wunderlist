@@ -7,3 +7,4 @@ require "wunderlist/exception"
 require "wunderlist/resource_proxy"
 
 require "wunderlist/resources/list"
+require "wunderlist/resources/user"

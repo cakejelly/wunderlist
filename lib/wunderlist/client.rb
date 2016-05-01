@@ -52,5 +52,9 @@ module Wunderlist
     def lists
       ResourceProxy.new(self, false, List)
     end
+
+    def users
+      ResourceProxy.new(self, false, User)
+    end
   end
 end
