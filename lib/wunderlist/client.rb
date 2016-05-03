@@ -56,5 +56,9 @@ module Wunderlist
     def users
       ResourceProxy.new(self, false, User)
     end
+
+    def webhooks
+      ResourceProxy.new(self, false, Webhook)
+    end
   end
 end
