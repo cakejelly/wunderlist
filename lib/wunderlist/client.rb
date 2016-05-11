@@ -64,5 +64,9 @@ module Wunderlist
     def tasks
       ResourceProxy.new(self, false, Task)
     end
+
+    def subtasks
+      ResourceProxy.new(self, false, Subtask)
+    end
   end
 end

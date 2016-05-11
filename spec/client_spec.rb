@@ -119,4 +119,15 @@ describe Wunderlist::Client do
       expect(proxy.resource).to eq(Wunderlist::Task)
     end
   end
+
+  describe "#subtasks" do
+    it "should return instance of ResourceProxy" do
+      expect(subject.subtasks).to be_instance_of(Wunderlist::ResourceProxy)
+    end
+
+    it "should proxy methods to Subtask" do
+      proxy = subject.subtasks
+      expect(proxy.resource).to eq(Wunderlist::Subtask)
+    end
+  end
 end
