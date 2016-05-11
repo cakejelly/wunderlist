@@ -86,4 +86,37 @@ describe Wunderlist::Client do
       expect(proxy.resource).to eq(Wunderlist::List)
     end
   end
+
+  describe "#users" do
+    it "should return instance of ResourceProxy" do
+      expect(subject.users).to be_instance_of(Wunderlist::ResourceProxy)
+    end
+
+    it "should proxy methods to User" do
+      proxy = subject.users
+      expect(proxy.resource).to eq(Wunderlist::User)
+    end
+  end
+
+  describe "#webhooks" do
+    it "should return instance of ResourceProxy" do
+      expect(subject.webhooks).to be_instance_of(Wunderlist::ResourceProxy)
+    end
+
+    it "should proxy methods to Webhook" do
+      proxy = subject.webhooks
+      expect(proxy.resource).to eq(Wunderlist::Webhook)
+    end
+  end
+
+  describe "#tasks" do
+    it "should return instance of ResourceProxy" do
+      expect(subject.tasks).to be_instance_of(Wunderlist::ResourceProxy)
+    end
+
+    it "should proxy methods to Task" do
+      proxy = subject.tasks
+      expect(proxy.resource).to eq(Wunderlist::Task)
+    end
+  end
 end

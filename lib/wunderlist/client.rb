@@ -60,5 +60,9 @@ module Wunderlist
     def webhooks
       ResourceProxy.new(self, false, Webhook)
     end
+
+    def tasks
+      ResourceProxy.new(self, false, Task)
+    end
   end
 end
