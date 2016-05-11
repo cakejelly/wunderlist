@@ -32,8 +32,18 @@ describe Wunderlist::Resource do
       end
 
       it "should make a GET request to retrieve resource collection" do
-        expect(client).to receive(:get).with("resources", {})
+        expect(client).to receive(:get).with("resources")
         described_class.all(client)
+      end
+
+      it "should send arguments as query params" do
+        params = {
+          page: "1",
+          per_page: "20"
+        }
+
+        expect(client).to receive(:get).with("resources?page=1&per_page=20")
+        described_class.all(client, params)
       end
 
       it "should return an array of resource objects" do

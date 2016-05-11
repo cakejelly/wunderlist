@@ -10,7 +10,14 @@ module Wunderlist
       end
 
       def all(client, params = {})
-        collection = client.get(url, params)
+        url = self.url
+
+        if params.any?
+          query_params = params.collect{ |key, val| "#{key}=#{val}" }.join("&")
+          url = "#{url}?#{query_params}"
+        end
+
+        collection = client.get(url)
         collection.map{ |resource| new(resource, client) }
       end
 
