@@ -49,6 +49,10 @@ module Wunderlist
       }
     end
 
+    def root
+      get("root")
+    end
+
     def lists
       ResourceProxy.new(self, false, List)
     end

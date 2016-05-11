@@ -76,6 +76,22 @@ describe Wunderlist::Client do
     end
   end
 
+  describe "#root" do
+    let(:root_response) { {"id"=>16317527, "type"=>"root", "revision"=>310, "user_id"=>16317527} }
+
+    before do
+      expect(RestClient::Request).to receive(:execute).and_return(root_response.to_json)
+    end
+
+    it "should make a GET request to retrieve the top level entity" do
+      subject.root
+    end
+
+    it "should return a hash of the root entity" do
+      expect(subject.root).to eq(root_response)
+    end
+  end
+
   describe "#lists" do
     it "should return instance of ResourceProxy" do
       expect(subject.lists).to be_instance_of(Wunderlist::ResourceProxy)
