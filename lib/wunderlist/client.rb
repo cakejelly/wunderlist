@@ -72,5 +72,9 @@ module Wunderlist
     def notes
       ResourceProxy.new(self, false, Note)
     end
+
+    def comments
+      ResourceProxy.new(self, false, Comment)
+    end
   end
 end

@@ -141,4 +141,15 @@ describe Wunderlist::Client do
       expect(proxy.resource).to eq(Wunderlist::Note)
     end
   end
+
+  describe "#comments" do
+    it "should return instance of ResourceProxy" do
+      expect(subject.comments).to be_instance_of(Wunderlist::ResourceProxy)
+    end
+
+    it "should proxy methods to Comment" do
+      proxy = subject.comments
+      expect(proxy.resource).to eq(Wunderlist::Comment)
+    end
+  end
 end
